@@ -1,0 +1,47 @@
+version: "3.4"
+
+networks:
+  storage-network:
+    driver: bridge
+
+services:
+  localstack:
+    container_name: storage-localstack
+    image: localstack/localstack
+    restart: always
+    ports:
+      - 4510-4559:4510-4559
+      - 4566:4566
+      - 4571:4571
+    environment:
+      - SERVICES=s3,dynamodb
+      - HOST_TMP_FOLDER=${TMPDIR:-/tmp/}localstack
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    volumes:
+      - "${TMPDIR:-/tmp}/localstack:/tmp/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      - storage-network
+
+  api:
+    container_name: filestorage-api
+    image: filestorage/api
+    restart: always
+    depends_on:
+      - localstack
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      ASPNETCORE_Kestrel__Certificates__Default__Password: password
+      ASPNETCORE_Kestrel__Certificates__Default__Path: /https/aspnetapp.pfx
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: https://+:5001
+      ASPNETCORE_HTTPS_PORT: 5001
+      S3:LocalUrl: http://localstack:4566
+    ports:
+      - 5001:5001
+    networks:
+      - storage-network
+    volumes:
+      - ~/.aspnet/https:/https:ro
