@@ -38,7 +38,7 @@ services:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: https://+:5001
       ASPNETCORE_HTTPS_PORT: 5001
-      S3:LocalUrl: http://localstack:4566
+      S3:LocalS3Url: http://localstack:4566
     ports:
       - 5001:5001
     networks:
