@@ -1,11 +1,11 @@
 # AspNetCore.Aws.S3.Simple
 
-A nuget package which allows you to integrate S3 storage into your Web Application. Also, the library allows you to use [localstack](https://github.com/localstack/localstack) for debugging.
+A [nuget package](https://www.nuget.org/packages/AspNetCore.Aws.S3.Simple/0.1.0) which allows you to integrate S3 storage into your Web Application. Also, the library allows you to use [localstack](https://github.com/localstack/localstack) for debugging.
 
 ## Installation
 
 ```
-Install-Package AspNetCore.Aws.S3.Simple
+dotnet add package AspNetCore.Aws.S3.Simple --version 0.1.0
 ```
 
 ## How to use
