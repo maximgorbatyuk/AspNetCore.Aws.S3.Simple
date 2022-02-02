@@ -6,9 +6,8 @@
     <title>AspNetCore.Aws.S3.Simple - useful library for Amazon S3 integration</title>
     <authors>@maximgorbatyuk</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <license type="expression">Apache License 2.0</license>
+    <license type="expression">Apache-2.0</license>
     <projectUrl>https://github.com/maximgorbatyuk/AspNetCore.Aws.S3.Simple</projectUrl>
-    <licenseUrl>https://github.com/maximgorbatyuk/AspNetCore.Aws.S3.Simple/blob/main/LICENSE</licenseUrl>
     <description>The libray allowes you to integrate Amazon S3 into your ASP.NET Core application.</description>
     <releaseNotes>First release.</releaseNotes>
     <copyright>Copyright (c) @maximgorbatyuk, 2022</copyright>

@@ -16,4 +16,8 @@
         </PackageReference>
     </ItemGroup>
 
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <NoWarn>,NU5128,NU5118</NoWarn>
+    </PropertyGroup>
+
 </Project>

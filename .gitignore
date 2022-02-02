@@ -54,3 +54,4 @@ TestResult.xml
 
 # Logs
 logs/
+*.nupkg
