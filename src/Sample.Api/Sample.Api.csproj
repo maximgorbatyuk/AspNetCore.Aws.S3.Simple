@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="AspNetCore.Aws.S3.Simple" Version="0.1.0" />
+        <PackageReference Include="AspNetCore.Aws.S3.Simple" Version="0.1.1" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
         <PackageReference Update="StyleCop.Analyzers" Version="1.1.118">
           <PrivateAssets>all</PrivateAssets>
