@@ -16,7 +16,7 @@ public class S3StorageSettings
     public const string BaseDomainConfigKey = "S3:S3BaseDomain";
     public const string AllowedFileExtensionsConfigKey = "S3:AllowedFileExtensions";
     public const string AllowedFileSizeInMbConfigKey = "S3:AllowedFileSizeInMb";
-    public const string LocalS3UrlConfigKey = "S3:LocalS3Url";
+    public const string CloudStorageUrlConfigKey = "S3:CloudStorageUrl";
 
     public S3StorageSettings(IConfiguration configuration)
     {
@@ -25,9 +25,9 @@ public class S3StorageSettings
         AllowedFileSizeInMb = int.Parse(GetConfigValueOrFail(configuration, AllowedFileSizeInMbConfigKey));
         AccessKey = GetConfigValueOrFail(configuration, AccessKeyConfigKey);
         AccessSecret = GetConfigValueOrFail(configuration, SecretKeyConfigKey);
-        Region = GetConfigValueOrFail(configuration, RegionConfigKey);
+        Region = GetConfigValueOrFail(configuration, RegionConfigKey, true);
         S3BaseDomain = GetConfigValueOrFail(configuration, BaseDomainConfigKey);
-        LocalS3Url = GetConfigValueOrFail(configuration, LocalS3UrlConfigKey, true);
+        CloudStorageUrl = GetConfigValueOrFail(configuration, CloudStorageUrlConfigKey, true);
     }
 
     public string BucketName { get; }
@@ -44,30 +44,36 @@ public class S3StorageSettings
 
     public string S3BaseDomain { get; }
 
-    public string LocalS3Url { get; }
+    public string CloudStorageUrl { get; }
 
-    public BasicAWSCredentials GetCredentials() => new (AccessKey, AccessSecret);
+    private BasicAWSCredentials GetCredentials() => new (AccessKey, AccessSecret);
 
-    public AmazonS3Config LocalstackConfig() =>
-        new AmazonS3Config
+    private AmazonS3Config AmazonS3Config()
+    {
+        var config = new AmazonS3Config
         {
-            ServiceURL = LocalS3Url,
+            ServiceURL = CloudStorageUrl,
             ForcePathStyle = true,
         };
 
-    public AmazonS3Config AmazonS3Config() =>
-        new AmazonS3Config
+        if (!string.IsNullOrEmpty(Region))
         {
-            RegionEndpoint = RegionEndpoint.GetBySystemName(Region)
-        };
+            config.RegionEndpoint = RegionEndpoint.GetBySystemName(Region);
+        }
+
+        return config;
+    }
+
+    public IAmazonS3 CreateClient()
+        => new AmazonS3Client(GetCredentials(), AmazonS3Config());
 
     public void SetupS3HealthCheck(
-        S3BucketOptions options, bool useLocalstack)
+        S3BucketOptions options)
     {
         options.BucketName = BucketName;
         options.AccessKey = AccessKey;
         options.SecretKey = AccessSecret;
-        options.S3Config = useLocalstack ? LocalstackConfig() : AmazonS3Config();
+        options.S3Config = AmazonS3Config();
     }
 
     private static string GetConfigValueOrFail(

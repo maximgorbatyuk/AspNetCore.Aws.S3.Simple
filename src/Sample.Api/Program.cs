@@ -1,5 +1,4 @@
-﻿using S3.Integration.AmazonServices;
-using S3.Integration.Settings;
+﻿using S3.Integration.Settings;
 using Sample.Api.Services;
 
 namespace Sample.Api;
@@ -14,11 +13,11 @@ public class Program
         builder.Services.AddSwaggerGen();
         builder.Services
             .AddHealthChecks()
-            .AddS3HealthChecks(builder.Configuration, builder.Environment.IsDevelopment());
+            .AddS3HealthChecks(builder.Configuration);
 
         builder.Services
             .AddHttpContextAccessor()
-            .AddS3Settings<LocalS3ConfigProvider>(builder.Environment.IsDevelopment())
+            .AddS3Settings()
             .AddS3Storage<IReimbursementFileStorage, ReimbursementAttachmentS3Storage>();
 
         var app = builder.Build();

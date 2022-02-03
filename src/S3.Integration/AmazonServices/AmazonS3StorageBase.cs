@@ -20,18 +20,15 @@ public abstract class AmazonS3StorageBase
     private const string ContentTypeMetaKey = "x-amz-meta-content-type";
     private const int FilePartitionSize = 6_291_456;
 
-    private readonly IS3ConfigProvider _s3ConfigProvider;
     private readonly S3StorageSettings _settings;
     private readonly IS3FileValidator _fileValidator;
     private readonly string _folderPrefix;
 
     protected AmazonS3StorageBase(
-        IS3ConfigProvider s3ConfigProvider,
         S3StorageSettings configuration,
         IS3FileValidator fileValidator,
         string folderPrefix)
     {
-        _s3ConfigProvider = s3ConfigProvider;
         _fileValidator = fileValidator;
         _folderPrefix = folderPrefix;
         _settings = configuration;
@@ -39,7 +36,7 @@ public abstract class AmazonS3StorageBase
 
     public async Task<FileUploadResult> UploadFileAsync(IUploadFileRequest file)
     {
-        using var client = new AmazonS3Client(_settings.GetCredentials(), _s3ConfigProvider.Config());
+        using var client = _settings.CreateClient();
         if (!await CreateBucketIfNotExistAsync(client))
         {
             throw new InvalidOperationException("Could not create bucket");
@@ -75,7 +72,7 @@ public abstract class AmazonS3StorageBase
 
     public async Task<S3File> DownloadFileAsync(string uniqueStorageName)
     {
-        using var client = new AmazonS3Client(_settings.GetCredentials(), _s3ConfigProvider.Config());
+        using var client = _settings.CreateClient();
         if (!await DoesBucketExistAsync(client))
         {
             throw new InvalidOperationException("Bucket does not exist");

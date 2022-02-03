@@ -1,5 +1,4 @@
-﻿using Amazon.S3;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using S3.Integration.AmazonServices;
 using S3.Integration.Contracts;
@@ -8,22 +7,11 @@ namespace S3.Integration.Settings;
 
 public static class StartupExtensions
 {
-    public static IServiceCollection AddS3Settings<TLocalDevelopmentClientProvider>(
-        this IServiceCollection services, bool isDevelopment)
-        where TLocalDevelopmentClientProvider : class, IS3ConfigProvider
+    public static IServiceCollection AddS3Settings(
+        this IServiceCollection services)
     {
         services.AddScoped<S3StorageSettings>();
         services.AddScoped<IS3FileValidator, S3FileValidator>();
-
-        if (isDevelopment)
-        {
-            services.AddScoped<IS3ConfigProvider, TLocalDevelopmentClientProvider>();
-        }
-        else
-        {
-            services.AddScoped<IS3ConfigProvider, AmazonS3ConfigProvider>();
-        }
-
         return services;
     }
 
@@ -35,13 +23,13 @@ public static class StartupExtensions
         return services.AddScoped<TService, TImplementation>();
     }
 
-    public static IHealthChecksBuilder AddS3HealthChecks(this IHealthChecksBuilder builder, IConfiguration configuration, bool isDevelopment)
+    public static IHealthChecksBuilder AddS3HealthChecks(this IHealthChecksBuilder builder, IConfiguration configuration)
     {
         var settings = new S3StorageSettings(configuration);
         return builder
             .AddS3(options =>
             {
-                settings.SetupS3HealthCheck(options, isDevelopment);
+                settings.SetupS3HealthCheck(options);
             });
     }
 }

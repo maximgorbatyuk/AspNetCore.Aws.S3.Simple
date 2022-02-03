@@ -36,7 +36,7 @@ public class InMemoryConfigurationBuilder
         _dictionary.Add(S3StorageSettings.BaseDomainConfigKey, baseDomain);
         _dictionary.Add(S3StorageSettings.AllowedFileExtensionsConfigKey, allowedExtensions);
         _dictionary.Add(S3StorageSettings.AllowedFileSizeInMbConfigKey, allowedFileSizeInMb.ToString());
-        _dictionary.Add(S3StorageSettings.LocalS3UrlConfigKey, localS3Url);
+        _dictionary.Add(S3StorageSettings.CloudStorageUrlConfigKey, localS3Url);
         return this;
     }
 
