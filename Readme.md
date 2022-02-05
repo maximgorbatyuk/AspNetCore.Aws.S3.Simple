@@ -5,10 +5,61 @@ A [nuget package](https://www.nuget.org/packages/AspNetCore.Aws.S3.Simple/) whic
 ## Installation
 
 ```
-dotnet add package AspNetCore.Aws.S3.Simple --version 0.1.1
+dotnet add package AspNetCore.Aws.S3.Simple
 ```
 
-## How to use
+## Demonstration
+
+For simple demo, you need Docker installed in your PC. If you have it, then follow the instruction:
+
+1. Pull the repo
+2. run `win-run.ps1` or `unix-run.ps1` script
+3. Go to https://localhost:5001/swagger/index.html. There are two endpoints: `/files/upload` and `/files/download`.
+
+## How to install and setup
+
+1. Install the nuget package `AspNetCore.Aws.S3.Simple`;
+2. Create inheritors of `IFileStorageBase.cs` and `AmazonS3StorageBase`;
+
+```csharp
+using S3.Integration.AmazonServices;
+using S3.Integration.Contracts;
+using S3.Integration.Settings;
+
+public interface IAvatarsStorage : IFileStorageBase
+{
+}
+
+public class AvatarsS3Storage : AmazonS3StorageBase, IAvatarsStorage
+{
+    public AvatarsS3Storage(
+        S3StorageSettings configuration,
+        IS3FileValidator fileValidator)
+        : base(configuration, fileValidator, "user-avatars")
+    {
+    }
+}
+```
+
+3. Add settings in the Startul.cs or Program.cs file:
+
+```csharp
+var builder = WebApplication.CreateBuilder(args);
+// ...
+builder.Services
+    .AddS3Settings()
+    .AddS3Storage<IAvatarsStorage, AvatarsS3Storage>();
+```
+
+4. Add healthcheck settings (if necessary):
+
+```csharp
+builder.Services
+    .AddHealthChecks()
+    .AddS3HealthChecks(builder.Configuration);
+```
+
+5. Use the storage service
 
 ## Sample project
 
