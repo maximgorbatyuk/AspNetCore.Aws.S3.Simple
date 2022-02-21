@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace S3.Integration.Models;
+namespace AspNetCore.Aws.S3.Simple.Models;
 
 public interface IUploadFileRequest
 {

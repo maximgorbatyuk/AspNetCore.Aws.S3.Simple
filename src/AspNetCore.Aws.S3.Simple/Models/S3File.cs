@@ -1,7 +1,6 @@
 ﻿using System;
-using Amazon.S3.Model;
 
-namespace S3.Integration.Models;
+namespace AspNetCore.Aws.S3.Simple.Models;
 
 public record S3File
 {

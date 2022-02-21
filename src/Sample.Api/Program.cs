@@ -1,4 +1,4 @@
-﻿using S3.Integration.Settings;
+﻿using AspNetCore.Aws.S3.Simple.Settings;
 using Sample.Api.Services;
 
 namespace Sample.Api;

@@ -2,7 +2,7 @@
 using System.Net;
 using Amazon.Runtime;
 
-namespace S3.Integration.Exceptions;
+namespace AspNetCore.Aws.S3.Simple.Exceptions;
 
 public class S3StorageException : InvalidOperationException
 {

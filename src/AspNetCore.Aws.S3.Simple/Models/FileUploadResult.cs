@@ -1,4 +1,4 @@
-﻿namespace S3.Integration.Models;
+﻿namespace AspNetCore.Aws.S3.Simple.Models;
 
 public readonly struct FileUploadResult
 {

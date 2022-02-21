@@ -5,7 +5,7 @@ using Amazon.S3;
 using HealthChecks.Aws.S3;
 using Microsoft.Extensions.Configuration;
 
-namespace S3.Integration.Settings;
+namespace AspNetCore.Aws.S3.Simple.Settings;
 
 public class S3StorageSettings
 {

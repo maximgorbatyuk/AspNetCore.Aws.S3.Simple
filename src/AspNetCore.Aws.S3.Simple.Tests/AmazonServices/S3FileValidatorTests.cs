@@ -1,10 +1,10 @@
-﻿using Moq;
-using S3.Integration.AmazonServices;
-using S3.Integration.Models;
-using S3.Integration.Settings;
+﻿using AspNetCore.Aws.S3.Simple.AmazonServices;
+using AspNetCore.Aws.S3.Simple.Models;
+using AspNetCore.Aws.S3.Simple.Settings;
+using Moq;
 using Xunit;
 
-namespace S3.Integration.Tests.AmazonServices;
+namespace AspNetCore.Aws.S3.Simple.Tests.AmazonServices;
 
 public class S3FileValidatorTests
 {

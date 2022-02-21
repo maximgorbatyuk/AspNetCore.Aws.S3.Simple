@@ -6,13 +6,13 @@ using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
 using Amazon.S3.Util;
-using S3.Integration.Contracts;
-using S3.Integration.Exceptions;
-using S3.Integration.Models;
-using S3.Integration.Settings;
-using S3.Integration.Utils;
+using AspNetCore.Aws.S3.Simple.Contracts;
+using AspNetCore.Aws.S3.Simple.Exceptions;
+using AspNetCore.Aws.S3.Simple.Models;
+using AspNetCore.Aws.S3.Simple.Settings;
+using AspNetCore.Aws.S3.Simple.Utils;
 
-namespace S3.Integration.AmazonServices;
+namespace AspNetCore.Aws.S3.Simple.AmazonServices;
 
 public abstract class AmazonS3StorageBase : IFileStorageBase
 {

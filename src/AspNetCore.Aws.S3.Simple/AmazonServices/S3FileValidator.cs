@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using S3.Integration.Contracts;
-using S3.Integration.Models;
-using S3.Integration.Settings;
+using AspNetCore.Aws.S3.Simple.Contracts;
+using AspNetCore.Aws.S3.Simple.Models;
+using AspNetCore.Aws.S3.Simple.Settings;
 
-namespace S3.Integration.AmazonServices;
+namespace AspNetCore.Aws.S3.Simple.AmazonServices;
 
 public class S3FileValidator : IS3FileValidator
 {

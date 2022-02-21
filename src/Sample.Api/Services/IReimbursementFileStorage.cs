@@ -1,4 +1,4 @@
-﻿using S3.Integration.Contracts;
+﻿using AspNetCore.Aws.S3.Simple.Contracts;
 
 namespace Sample.Api.Services;
 

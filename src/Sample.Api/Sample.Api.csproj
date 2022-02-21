@@ -17,7 +17,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\S3.Integration\S3.Integration.csproj" />
+      <ProjectReference Include="..\AspNetCore.Aws.S3.Simple\AspNetCore.Aws.S3.Simple.csproj" />
     </ItemGroup>
 
 </Project>

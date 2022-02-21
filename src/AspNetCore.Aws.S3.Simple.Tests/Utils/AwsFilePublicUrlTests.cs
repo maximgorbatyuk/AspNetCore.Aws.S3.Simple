@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using S3.Integration.Settings;
-using S3.Integration.Utils;
+﻿using AspNetCore.Aws.S3.Simple.Settings;
+using AspNetCore.Aws.S3.Simple.Utils;
 using Xunit;
 
-namespace S3.Integration.Tests.Utils;
+namespace AspNetCore.Aws.S3.Simple.Tests.Utils;
 
 public class AwsFilePublicUrlTests
 {

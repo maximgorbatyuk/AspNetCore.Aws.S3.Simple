@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
+using AspNetCore.Aws.S3.Simple.Settings;
 using Microsoft.Extensions.Configuration;
-using S3.Integration.Settings;
 
-namespace S3.Integration.Tests;
+namespace AspNetCore.Aws.S3.Simple.Tests;
 
 public class InMemoryConfigurationBuilder
 {

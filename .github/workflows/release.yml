@@ -8,9 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
-      project: S3.Integration
-      project-folder: ./src/S3.Integration
-      project-file: src/S3.Integration/S3.Integration.csproj
+      project: AspNetCore.Aws.S3.Simple
+      project-folder: ./src/AspNetCore.Aws.S3.Simple
+      project-file: src/AspNetCore.Aws.S3.Simple/AspNetCore.Aws.S3.Simple.csproj
       nuget-pgk-link: https://nuget.pkg.github.com/maximgorbatyuk/index.json
     steps:
     - name: Checkout

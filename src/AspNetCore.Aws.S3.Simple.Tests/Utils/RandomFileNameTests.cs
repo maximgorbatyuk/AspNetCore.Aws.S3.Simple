@@ -1,8 +1,8 @@
 ﻿using System;
-using S3.Integration.Utils;
+using AspNetCore.Aws.S3.Simple.Utils;
 using Xunit;
 
-namespace S3.Integration.Tests.Utils;
+namespace AspNetCore.Aws.S3.Simple.Tests.Utils;
 
 public class RandomFileNameTests
 {

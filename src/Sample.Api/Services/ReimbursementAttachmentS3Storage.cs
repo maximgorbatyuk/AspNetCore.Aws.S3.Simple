@@ -1,6 +1,6 @@
-﻿using S3.Integration.AmazonServices;
-using S3.Integration.Contracts;
-using S3.Integration.Settings;
+﻿using AspNetCore.Aws.S3.Simple.AmazonServices;
+using AspNetCore.Aws.S3.Simple.Contracts;
+using AspNetCore.Aws.S3.Simple.Settings;
 
 namespace Sample.Api.Services;
 
