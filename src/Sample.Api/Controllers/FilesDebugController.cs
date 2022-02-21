@@ -22,14 +22,21 @@ public class FilesDebugController : ControllerBase
             return BadRequest();
         }
 
-        return Ok(await _reimbursementFileStorage.UploadFileAsync(new UploadFileRequest(file.File)));
+        var result = await _reimbursementFileStorage.UploadFileAsync(new UploadFileRequest(file.File));
+        return Ok(result.UniqueStorageName);
     }
 
     [HttpPost("download")]
-    public async Task<FileContentResult> DownloadAsync([FromBody] FileDownloadRequest request)
+    public async Task<IActionResult> DownloadAsync([FromBody] FileRequest request)
     {
         var file = await _reimbursementFileStorage.DownloadFileAsync(request.Filename);
         return File(file.Content, file.ContentType, file.OriginalFileName);
+    }
+
+    [HttpDelete("delete")]
+    public async Task<IActionResult> DeleteAsync([FromBody] FileRequest request)
+    {
+        return Ok(await _reimbursementFileStorage.DeleteFileAsync(request.Filename));
     }
 }
 
@@ -38,7 +45,7 @@ public record FormUploadRequest
     public IFormFile? File { get; init; }
 }
 
-public class FileDownloadRequest
+public class FileRequest
 {
     public string? Filename { get; init; }
 }

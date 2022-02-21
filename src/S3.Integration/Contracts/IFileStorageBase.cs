@@ -8,4 +8,6 @@ public interface IFileStorageBase
     Task<FileUploadResult> UploadFileAsync(IUploadFileRequest file);
 
     Task<S3File> DownloadFileAsync(string uniqueStorageName);
+
+    Task<bool> DeleteFileAsync(string uniqueStorageName);
 }

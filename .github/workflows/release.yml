@@ -1,0 +1,39 @@
+name: Publish nuget
+
+on:
+  push:
+    branches: [main]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      project: S3.Integration
+      project-folder: ./src/S3.Integration
+      project-file: src/S3.Integration/S3.Integration.csproj
+      nuget-pgk-link: https://nuget.pkg.github.com/maximgorbatyuk/index.json
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: "6.0.x"
+    - name: Build
+      working-directory: ${{env.project-folder}}
+      run: dotnet build --configuration Release
+    - name: Test
+      working-directory: ${{env.project-folder}}
+      run: dotnet test --configuration Release --no-build 
+    - name: Pack
+      working-directory: ${{env.project-folder}}
+      run: dotnet pack --configuration Release --no-build --output .
+    #- name: Push
+    #  working-directory: ${{env.project-folder}}
+    #  run: dotnet nuget push ${{env.project}}.${VERSION}.nupkg --source ${{env.nuget-pgk-link}} --api-key ${{secrets.NUGET_API_KEY}}
+    - name: Publish nuget package
+      uses: brandedoutcast/publish-nuget@v2.5.2
+      with:
+          PROJECT_FILE_PATH: ${{env.project-file}}
+          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+        
