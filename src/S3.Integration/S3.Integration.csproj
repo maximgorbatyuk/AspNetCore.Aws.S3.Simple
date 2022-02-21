@@ -3,6 +3,16 @@
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
         <LangVersion>latest</LangVersion>
+        <Version>0.1.2</Version>
+        <Company>@maximgorbatyuk</Company>
+        <Copyright>Copyright © @maximgorbatyuk</Copyright>
+        <RepositoryUrl>https://github.com/maximgorbatyuk/AspNetCore.Aws.S3.Simple</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/maximgorbatyuk/AspNetCore.Aws.S3.Simple</PackageProjectUrl>
+        <PackageLicenseFile></PackageLicenseFile>
+        <Description>The libray allowes you to integrate Amazon S3 into your ASP.NET Core application.</Description>
+        <Product>Web app utils</Product>
+        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+        <Tags>amazon,asp,s3,aws</Tags>
     </PropertyGroup>
 
     <ItemGroup>
