@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using Amazon.S3.Model;
 
-namespace S3.Integration.Utils;
+namespace AspNetCore.Aws.S3.Simple.Utils;
 
 public class FileDownloadRequest : GetObjectRequest
 {

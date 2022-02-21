@@ -1,7 +1,7 @@
 ﻿using System;
 using Amazon.Runtime;
 
-namespace S3.Integration.Exceptions;
+namespace AspNetCore.Aws.S3.Simple.Exceptions;
 
 public class FileDoesNotExistException : InvalidOperationException
 {

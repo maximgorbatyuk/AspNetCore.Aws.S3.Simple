@@ -1,9 +1,9 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using AspNetCore.Aws.S3.Simple.AmazonServices;
+using AspNetCore.Aws.S3.Simple.Contracts;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using S3.Integration.AmazonServices;
-using S3.Integration.Contracts;
 
-namespace S3.Integration.Settings;
+namespace AspNetCore.Aws.S3.Simple.Settings;
 
 public static class StartupExtensions
 {

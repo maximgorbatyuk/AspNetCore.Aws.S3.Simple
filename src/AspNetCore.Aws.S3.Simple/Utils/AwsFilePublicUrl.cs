@@ -1,6 +1,6 @@
-﻿using S3.Integration.Settings;
+﻿using AspNetCore.Aws.S3.Simple.Settings;
 
-namespace S3.Integration.Utils;
+namespace AspNetCore.Aws.S3.Simple.Utils;
 
 // URL patterns: Virtual hosted style and path style
 // Virtual hosted style

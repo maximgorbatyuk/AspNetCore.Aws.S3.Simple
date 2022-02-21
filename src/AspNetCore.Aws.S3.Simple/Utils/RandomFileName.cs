@@ -2,7 +2,7 @@
 using System.IO;
 using System.Net;
 
-namespace S3.Integration.Utils;
+namespace AspNetCore.Aws.S3.Simple.Utils;
 
 public readonly struct RandomFileName
 {
