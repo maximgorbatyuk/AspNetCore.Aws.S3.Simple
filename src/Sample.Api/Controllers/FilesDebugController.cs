@@ -26,10 +26,27 @@ public class FilesDebugController : ControllerBase
     }
 
     [HttpPost("download")]
-    public async Task<FileContentResult> DownloadAsync([FromBody] FileDownloadRequest request)
+    public async Task<IActionResult> DownloadAsync([FromBody] FileRequest request)
     {
         var file = await _reimbursementFileStorage.DownloadFileAsync(request.Filename);
-        return File(file.Content, file.ContentType, file.OriginalFileName);
+        if (!file.Success)
+        {
+            return BadRequest($"Error during downloading: {file.ThrownError}");
+        }
+
+        return File(file.Result.Content, file.Result.ContentType, file.Result.OriginalFileName);
+    }
+
+    [HttpDelete("delete")]
+    public async Task<IActionResult> DeleteAsync([FromBody] FileRequest request)
+    {
+        var file = await _reimbursementFileStorage.DeleteFileAsync(request.Filename);
+        if (!file.Success)
+        {
+            return BadRequest($"Error duting downloading: {file.ThrownError}");
+        }
+
+        return Ok();
     }
 }
 
@@ -38,7 +55,7 @@ public record FormUploadRequest
     public IFormFile? File { get; init; }
 }
 
-public class FileDownloadRequest
+public class FileRequest
 {
     public string? Filename { get; init; }
 }

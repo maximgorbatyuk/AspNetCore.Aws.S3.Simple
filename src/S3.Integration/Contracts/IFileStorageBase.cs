@@ -5,7 +5,9 @@ namespace S3.Integration.Contracts;
 
 public interface IFileStorageBase
 {
-    Task<FileUploadResult> UploadFileAsync(IUploadFileRequest file);
+    Task<IOptional<string>> UploadFileAsync(IUploadFileRequest file);
 
-    Task<S3File> DownloadFileAsync(string uniqueStorageName);
+    Task<IOptional<S3File>> DownloadFileAsync(string uniqueStorageName);
+
+    Task<IOptional<bool>> DeleteFileAsync(string uniqueStorageName);
 }

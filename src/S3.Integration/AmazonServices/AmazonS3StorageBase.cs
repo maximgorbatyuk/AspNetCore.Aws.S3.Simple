@@ -14,7 +14,7 @@ using S3.Integration.Utils;
 
 namespace S3.Integration.AmazonServices;
 
-public abstract class AmazonS3StorageBase
+public abstract class AmazonS3StorageBase : IFileStorageBase
 {
     private const string OriginalFileNameMetaKey = "x-amz-meta-title";
     private const string ContentTypeMetaKey = "x-amz-meta-content-type";
@@ -34,7 +34,7 @@ public abstract class AmazonS3StorageBase
         _settings = configuration;
     }
 
-    public async Task<FileUploadResult> UploadFileAsync(IUploadFileRequest file)
+    public async Task<IOptional<string>> UploadFileAsync(IUploadFileRequest file)
     {
         using var client = _settings.CreateClient();
         if (!await CreateBucketIfNotExistAsync(client))
@@ -46,7 +46,7 @@ public abstract class AmazonS3StorageBase
 
         if (!_fileValidator.IsValid(file))
         {
-            return new FileUploadResult(false, string.Empty);
+            return new FileUploadResult(string.Empty, null);
         }
 
         var randomFileName = new RandomFileName(file.FileName);
@@ -66,40 +66,75 @@ public abstract class AmazonS3StorageBase
         transferUtilityRequest.Metadata.Add(OriginalFileNameMetaKey, randomFileName.OriginalFileName);
         transferUtilityRequest.Metadata.Add(ContentTypeMetaKey, file.ContentType);
 
-        await fileTransferUtility.UploadAsync(transferUtilityRequest);
-        return new FileUploadResult(true, uniqueStorageKey);
+        try
+        {
+            await fileTransferUtility.UploadAsync(transferUtilityRequest);
+            return new FileUploadResult(uniqueStorageKey, null);
+        }
+        catch (Exception e)
+        {
+            return new FileUploadResult(string.Empty, e);
+        }
     }
 
-    public async Task<S3File> DownloadFileAsync(string uniqueStorageName)
+    public async Task<IOptional<S3File>> DownloadFileAsync(string uniqueStorageName)
     {
         using var client = _settings.CreateClient();
         if (!await DoesBucketExistAsync(client))
         {
-            throw new InvalidOperationException("Bucket does not exist");
+            return new Optional<S3File>(
+                null, new InvalidOperationException("Bucket does not exist"));
         }
 
-        uniqueStorageName = WebUtility.HtmlDecode(uniqueStorageName).ToLowerInvariant();
-        var request = new GetObjectRequest
+        var request = new FileDownloadRequest(uniqueStorageName, _settings.BucketName);
+
+        try
         {
-            BucketName = _settings.BucketName,
-            Key = uniqueStorageName
-        };
+            using GetObjectResponse response = await client.GetObjectAsync(request);
+            await using var responseStream = response.ResponseStream;
+            await using var memory = new MemoryStream();
 
-        using GetObjectResponse response = await client.GetObjectAsync(request);
-        await using var responseStream = response.ResponseStream;
-        await using var memory = new MemoryStream();
+            var originalFileName = response.Metadata[OriginalFileNameMetaKey];
+            var contentType = response.Metadata[ContentTypeMetaKey];
+            await responseStream.CopyToAsync(memory);
+            var responseBody = memory.ToArray();
 
-        var originalFileName = response.Metadata[OriginalFileNameMetaKey];
-        var contentType = response.Metadata[ContentTypeMetaKey];
-        await responseStream.CopyToAsync(memory);
-        var responseBody = memory.ToArray();
+            return new Optional<S3File>(
+                new S3File(
+                    originalFileName,
+                    uniqueStorageName,
+                    contentType,
+                    responseBody,
+                    response.LastModified));
+        }
+        catch (Exception ex)
+        {
+            return new Optional<S3File>(null, ex);
+        }
+    }
 
-        return new S3File(
-            originalFileName,
-            uniqueStorageName,
-            contentType,
-            responseBody,
-            response.LastModified);
+    public async Task<IOptional<bool>> DeleteFileAsync(string uniqueStorageName)
+    {
+        using var client = _settings.CreateClient();
+        if (!await DoesBucketExistAsync(client))
+        {
+            return new Optional<bool>(
+                false, new InvalidOperationException("Bucket does not exist"));
+        }
+
+        var request = new FileDeleteRequest(uniqueStorageName, _settings.BucketName);
+
+        try
+        {
+            var response = await client.DeleteObjectAsync(request);
+            var deleteMarker = response.DeleteMarker;
+
+            return new Optional<bool>(!string.IsNullOrEmpty(deleteMarker), null);
+        }
+        catch (Exception ex)
+        {
+            return new Optional<bool>(false, ex);
+        }
     }
 
     private async Task<bool> CreateBucketIfNotExistAsync(

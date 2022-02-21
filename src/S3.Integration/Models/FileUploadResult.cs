@@ -1,16 +1,14 @@
 ﻿using System;
+using S3.Integration.Contracts;
 
 namespace S3.Integration.Models;
 
-public struct FileUploadResult
+public record FileUploadResult : Optional<string>
 {
-    public FileUploadResult(bool success, string uniqueStorageName)
+    public FileUploadResult(string uniqueStorageName, Exception ex)
+        : base(uniqueStorageName, ex)
     {
-        Success = success;
-        UniqueStorageName = uniqueStorageName;
     }
 
-    public bool Success { get; }
-
-    public string UniqueStorageName { get; }
+    public override bool Success => ThrownError is null && !string.IsNullOrEmpty(Result);
 }
