@@ -113,13 +113,13 @@ public abstract class AmazonS3StorageBase : IFileStorageBase
         }
     }
 
-    public async Task<IOptional<bool>> DeleteFileAsync(string uniqueStorageName)
+    public async Task<IOptional<HttpStatusCode>> DeleteFileAsync(string uniqueStorageName)
     {
         using var client = _settings.CreateClient();
         if (!await DoesBucketExistAsync(client))
         {
-            return new Optional<bool>(
-                false, new InvalidOperationException("Bucket does not exist"));
+            return new Optional<HttpStatusCode>(
+                HttpStatusCode.InternalServerError, new InvalidOperationException("Bucket does not exist"));
         }
 
         var request = new FileDeleteRequest(uniqueStorageName, _settings.BucketName);
@@ -129,11 +129,11 @@ public abstract class AmazonS3StorageBase : IFileStorageBase
             var response = await client.DeleteObjectAsync(request);
             var deleteMarker = response.DeleteMarker;
 
-            return new Optional<bool>(!string.IsNullOrEmpty(deleteMarker), null);
+            return new Optional<HttpStatusCode>(response.HttpStatusCode, null);
         }
         catch (Exception ex)
         {
-            return new Optional<bool>(false, ex);
+            return new Optional<HttpStatusCode>(HttpStatusCode.InternalServerError, ex);
         }
     }
 

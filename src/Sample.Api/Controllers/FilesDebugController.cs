@@ -22,7 +22,13 @@ public class FilesDebugController : ControllerBase
             return BadRequest();
         }
 
-        return Ok(await _reimbursementFileStorage.UploadFileAsync(new UploadFileRequest(file.File)));
+        var result = await _reimbursementFileStorage.UploadFileAsync(new UploadFileRequest(file.File));
+        if (!result.Success)
+        {
+            return BadRequest($"Error during uploading: {result.ThrownError}");
+        }
+
+        return Ok(result.Result);
     }
 
     [HttpPost("download")]
