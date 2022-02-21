@@ -23,36 +23,20 @@ public class FilesDebugController : ControllerBase
         }
 
         var result = await _reimbursementFileStorage.UploadFileAsync(new UploadFileRequest(file.File));
-        if (!result.Success)
-        {
-            return BadRequest($"Error during uploading: {result.ThrownError}");
-        }
-
-        return Ok(result.Result);
+        return Ok(result.UniqueStorageName);
     }
 
     [HttpPost("download")]
     public async Task<IActionResult> DownloadAsync([FromBody] FileRequest request)
     {
         var file = await _reimbursementFileStorage.DownloadFileAsync(request.Filename);
-        if (!file.Success)
-        {
-            return BadRequest($"Error during downloading: {file.ThrownError}");
-        }
-
-        return File(file.Result.Content, file.Result.ContentType, file.Result.OriginalFileName);
+        return File(file.Content, file.ContentType, file.OriginalFileName);
     }
 
     [HttpDelete("delete")]
     public async Task<IActionResult> DeleteAsync([FromBody] FileRequest request)
     {
-        var file = await _reimbursementFileStorage.DeleteFileAsync(request.Filename);
-        if (!file.Success)
-        {
-            return BadRequest($"Error duting downloading: {file.ThrownError}");
-        }
-
-        return Ok();
+        return Ok(await _reimbursementFileStorage.DeleteFileAsync(request.Filename));
     }
 }
 
