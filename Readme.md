@@ -1,5 +1,7 @@
 # AspNetCore.Aws.S3.Simple
 
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/maximgorbatyuk/AspNetCore.Aws.S3.Simple/Tests) ![Nuget](https://img.shields.io/nuget/dt/AspNetCore.Aws.S3.Simple) ![GitHub release (latest by date)](https://img.shields.io/github/v/release/maximgorbatyuk/AspNetCore.Aws.S3.Simple) ![GitHub](https://img.shields.io/github/license/maximgorbatyuk/AspNetCore.Aws.S3.Simple)
+
 A [nuget package](https://www.nuget.org/packages/AspNetCore.Aws.S3.Simple/) which allows you to integrate S3 storage into your Web Application. Also, the library allows you to use [localstack](https://github.com/localstack/localstack) for debugging.
 
 ## Installation
