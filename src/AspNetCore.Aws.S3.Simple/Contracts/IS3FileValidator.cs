@@ -4,5 +4,5 @@ namespace AspNetCore.Aws.S3.Simple.Contracts;
 
 public interface IS3FileValidator
 {
-    bool IsValid(IUploadFileRequest uploadFileRequest);
+    FileValidationResult Validate(IUploadFileRequest uploadFileRequest);
 }

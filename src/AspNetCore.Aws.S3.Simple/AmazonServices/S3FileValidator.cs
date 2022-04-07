@@ -16,22 +16,29 @@ public class S3FileValidator : IS3FileValidator
         _settings = settings;
     }
 
-    public bool IsValid(IUploadFileRequest uploadFileRequest)
+    public FileValidationResult Validate(IUploadFileRequest uploadFileRequest)
     {
         // Check file length
         if (uploadFileRequest.FileSize < 0)
         {
-            return false;
+            return FileValidationResult.FilesizeInvalid;
         }
 
         var ext = Path.GetExtension(uploadFileRequest.FileName)?.ToLowerInvariant();
-        if (string.IsNullOrEmpty(ext) || !AllowedExtensions().Contains(ext))
+        if (string.IsNullOrEmpty(ext))
         {
-            return false;
+            return FileValidationResult.FileExtensionEmpty;
+        }
+
+        if (!AllowedExtensions().Contains(ext))
+        {
+            return FileValidationResult.FileExtensionNotAllowed;
         }
 
         // Check if file size is greater than permitted limit
-        return uploadFileRequest.FileSize <= FileSize();
+        return uploadFileRequest.FileSize <= FileSize()
+            ? FileValidationResult.Valid
+            : FileValidationResult.FilesizeExceeded;
     }
 
     private ICollection<string> AllowedExtensions()
