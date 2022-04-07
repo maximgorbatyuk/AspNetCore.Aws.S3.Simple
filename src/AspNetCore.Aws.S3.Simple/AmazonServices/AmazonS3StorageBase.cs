@@ -42,13 +42,12 @@ public abstract class AmazonS3StorageBase : IFileStorageBase
             throw new InvalidOperationException("Could not create bucket");
         }
 
-        var fileTransferUtility = new TransferUtility(client);
-
         if (!_fileValidator.IsValid(file))
         {
-            return new FileUploadResult(string.Empty);
+            return FileUploadResult.Failure("File is invalid");
         }
 
+        var fileTransferUtility = new TransferUtility(client);
         var randomFileName = new RandomFileName(file.FileName);
         var uniqueStorageKey = WithFolderPrefixIfExist(randomFileName);
 
@@ -67,7 +66,7 @@ public abstract class AmazonS3StorageBase : IFileStorageBase
         transferUtilityRequest.Metadata.Add(ContentTypeMetaKey, file.ContentType);
 
         await fileTransferUtility.UploadAsync(transferUtilityRequest);
-        return new FileUploadResult(uniqueStorageKey);
+        return FileUploadResult.Success(uniqueStorageKey);
     }
 
     public async Task<S3File> DownloadFileAsync(string uniqueStorageName)
