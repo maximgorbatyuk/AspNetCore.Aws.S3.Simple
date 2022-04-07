@@ -42,9 +42,10 @@ public abstract class AmazonS3StorageBase : IFileStorageBase
             throw new InvalidOperationException("Could not create bucket");
         }
 
-        if (!_fileValidator.IsValid(file))
+        var fileValidationResult = _fileValidator.Validate(file);
+        if (fileValidationResult != FileValidationResult.Valid)
         {
-            return FileUploadResult.Failure("File is invalid");
+            return FileUploadResult.Failure(fileValidationResult.ToString());
         }
 
         var fileTransferUtility = new TransferUtility(client);
