@@ -21,6 +21,7 @@ public class S3FileValidatorTests
     [InlineData(6 * 1024 * 1024, "report.jpeg", 6, "jpg,jpeg,png,pdf", true)]
     [InlineData(6 * 1024 * 1024, "report.jpg", 6, "jpg,jpeg,png,pdf", true)]
     [InlineData(6 * 1024 * 1024, "report.png", 6, "jpg,jpeg,png,pdf", true)]
+    [InlineData(6 * 1024 * 1024, "report.gif", 6, "jpg,jpeg,png,pdf,gif", true)]
     public void IsValid_Cases_Match(
         int fileLength,
         string fileName,
