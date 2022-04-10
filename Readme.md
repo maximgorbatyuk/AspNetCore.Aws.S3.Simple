@@ -68,8 +68,8 @@ builder.Services
 
 ## Roadmap
 
-- [] Add API for reading all files in the bucket
-- [] Storing private and public files
+- [ ] Add API for reading all files in the bucket
+- [ ] Storing private and public files
 
 ## Sample project
 
