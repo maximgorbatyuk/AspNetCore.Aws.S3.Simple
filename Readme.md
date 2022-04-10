@@ -66,7 +66,14 @@ builder.Services
 
 5. Use the storage service
 
+## Roadmap
+
+- [] Add API for reading all files in the bucket
+- [] Storing private and public files
+
 ## Sample project
+
+CHeck out this sample [Web.Api](https://github.com/maximgorbatyuk/AspNetCore.Aws.S3.Simple/tree/dev/src/Sample.Api) project and see how to use the nuget
 
 ## Resources
 
