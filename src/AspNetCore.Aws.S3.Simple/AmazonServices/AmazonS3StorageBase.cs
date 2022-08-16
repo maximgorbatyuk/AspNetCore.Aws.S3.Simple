@@ -130,7 +130,7 @@ public abstract class AmazonS3StorageBase : IFileStorageBase
         }
         catch (AmazonS3Exception e)
         {
-            throw new S3StorageException($"Could not create bucket {_settings}", e);
+            throw new S3StorageException($"Could not create bucket {_settings.BucketName}", e);
         }
     }
 
